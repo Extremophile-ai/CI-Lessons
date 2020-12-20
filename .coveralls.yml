@@ -1,3 +1,1 @@
 repo_token: s9qVWdFnlQu9cS8JK0hshK96nsp8qTLRA
-COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-github-token: ${{ secrets.GITHUB_TOKEN }}
