@@ -9,6 +9,9 @@ export default class UserController {
     static async createNewUser (req, res) {
         try {
             const { username, email, password } =req.body;
+            if(!username || !email || !password) {
+                return res.status(400).json({success: false, error: "One or more parameters are missing"})
+            }
             const checkEmail = await findUser(email);
             const usernameExist = await checkUsername(username);
             if(usernameExist || checkEmail) {
@@ -32,7 +35,6 @@ export default class UserController {
                 error: "Server Error"
             });
         }
-
     };
 
     static async getOneUserById (req, res) {
@@ -57,30 +59,6 @@ export default class UserController {
             })
         }
     };
-
-    // static async getUserByMail (req, res) {
-    //     try {
-    //     const { email } = req.body;
-    //     const getUser = await findUser(email);
-    //     console.log(getUser);
-    //     if(getUser) {
-    //         return res.status(200).json({
-    //             success: true,
-    //             message: "User retrieved!",
-    //             data: getUser
-    //         });
-    //     }
-    //     return res.status(404).json({
-    //         success: false,
-    //         error: "User not found!"
-    //     });
-    //     } catch (error) {
-    //         return res.status(500).json({
-    //             success: false,
-    //             error: "Server Error"
-    //         })
-    //     }
-    // };
 
     static async getAllUsers (req, res) {
         try {
@@ -117,7 +95,7 @@ export default class UserController {
             return res.status(404).json({
                 success: false,
                 error: "User Not Found!"
-            })
+            });
         } catch (error) {
             return res.status(500).json({
                 success: false,
@@ -136,6 +114,10 @@ export default class UserController {
                     message: "User Account deleted"
                 });
             };
+            return res.status(404).json({
+                success: false,
+                error: "User Not Found!"
+            }); 
         } catch (error) {
             return res.status(500).json({
                 success: false,

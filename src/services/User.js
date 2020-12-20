@@ -54,7 +54,7 @@ export default class UserServices {
 
     static async deleteUser(_id) {
         try {
-            return await User.findByIdAndDelete({ _id })
+            return await User.findByIdAndDelete({ _id });
         } catch (error) {
           return error;
         }

@@ -28,4 +28,15 @@ const connectDB = async () => {
     };
 };
 
-export default connectDB;
+
+const dropDB = async () => {
+    try {
+        for(let collection in mongoose.connection.collections) {
+            mongoose.connection.collections[collection].drop(() => {})
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+export {connectDB, dropDB};

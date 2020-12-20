@@ -1,5 +1,6 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
+import { dropDB } from "../../config/db"
 import server from "../../server";
 import {
     user,
@@ -9,11 +10,16 @@ import {
     profile
 } from "./user-test-data";
 
+
 chai.should();
 chai.use(chaiHttp);
 
 
 describe("Should handle correct user's behaviour", async () => {
+    before(async () => {  
+        await dropDB("CI_lesson_test");
+    });
+
     describe("/user/signup should create a user", () => {
         it("it should create a user with complete details successfully", (done) => {
           chai
@@ -29,6 +35,7 @@ describe("Should handle correct user's behaviour", async () => {
               done();
             });
         });
+    
         it("it should not create a user with an already taken username", done => {
             chai
             .request(server)
@@ -76,7 +83,6 @@ describe("Should handle correct user's behaviour", async () => {
             .end((err, res) => {
                 if (err) throw err;
                 _id = res.body.data._id;
-                // console.log(_id)
                 done();
             });
         });
@@ -87,7 +93,6 @@ describe("Should handle correct user's behaviour", async () => {
               .set("Accept", "application/json")
               .send(profile)
               .end((err, res) => {
-                //   console.log(res.body)
                 res.should.have.status(200);
                 res.body.should.have.property("message").eql("User Details Uploaded");
                 done();
@@ -116,4 +121,7 @@ describe("Should handle correct user's behaviour", async () => {
             });
         });
     });
+    // after(async () => {  
+    //     await dropDB("CI_lesson_test");
+    //   });
 });
